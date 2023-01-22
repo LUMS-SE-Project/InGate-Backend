@@ -2,6 +2,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# import db config stored in core folder
+from app.core.db import connect_mongodb
+
 # create an instance of the app
 app = FastAPI()
 
@@ -16,6 +19,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# connect to mongodb
+client = connect_mongodb()
+
+
 
 # create a route
 @app.get("/")
