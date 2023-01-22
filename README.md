@@ -1,1 +1,2 @@
-# CS360-backend
+# Welcome to the project directory
+
