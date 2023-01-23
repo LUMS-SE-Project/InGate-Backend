@@ -109,7 +109,7 @@ requests-toolbelt==0.10.1
 restructuredtext-lint==1.4.0
 rfc3986==1.5.0
 rich==12.6.0
--e git+ssh://git@github.com/jazlan01/CS360-backend.git@71cd55ef20badddcb1526962d731598c7786e8b2#egg=se
+-e git+ssh://git@github.com/jazlan01/CS360-backend.git@0944bd3fd190807d4d01403150eea6fdf861084f#egg=se
 shellingham==1.5.0.post1
 simple-term-menu==1.6.1
 six==1.16.0
