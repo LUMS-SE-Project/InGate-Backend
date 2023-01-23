@@ -34,3 +34,17 @@ def index():
 @app.get("/test")
 def test():
     return {"Hello World!"}
+
+
+# create a table if not exists in the db and handles errors
+def create_table():
+    try:
+        db = client["SEProj"]
+        table = db["test"]
+        return table
+    except Exception as e:
+        print("Error: %s" % e)
+        
+
+
+table = create_table()
