@@ -1,9 +1,11 @@
 # import fast APi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter
+
 
 # import db config stored in core folder
-from app.core.db import connect_mongodb
+from app.config.db import client
 
 # create an instance of the app
 app = FastAPI()
@@ -20,15 +22,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# connect to mongodb
-client = connect_mongodb()
-
-
-
 # create a route
 @app.get("/")
 def index():
-    return {"data": {"name": "John"}}
+    return {"message": "Hello World!"}
 
 
 @app.get("/test")
@@ -36,15 +33,4 @@ def test():
     return {"Hello World!"}
 
 
-# create a table if not exists in the db and handles errors
-def create_table():
-    try:
-        db = client["SEProj"]
-        table = db["test"]
-        return table
-    except Exception as e:
-        print("Error: %s" % e)
-        
 
-
-table = create_table()

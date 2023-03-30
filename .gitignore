@@ -9,3 +9,6 @@ __pycache__/
 
 # ignore .env files
 .env
+
+# ignore python env
+env

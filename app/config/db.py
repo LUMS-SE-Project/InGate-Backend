@@ -16,3 +16,4 @@ def connect_mongodb():
     return client
 
 
+client = connect_mongodb()
