@@ -1,14 +1,13 @@
-# import fast APi
-from fastapi import FastAPI
+from typing import Annotated
+
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import APIRouter
+from fastapi.security import OAuth2PasswordBearer
 
-
-# import db config stored in core folder
 from app.config.db import client
 
-# create an instance of the app
-app = FastAPI()
+app = FastAPI(title="InGate")
 
 origins = [
     *["http://localhost:3000"],
@@ -22,15 +21,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# create a route
-@app.get("/")
-def index():
-    return {"message": "Hello World!"}
+from app.routes.index import router as IndexRouter
+from app.routes.admin import router as AdminRouter
+from app.routes.user import router as UserRouter
 
 
-@app.get("/test")
-def test():
-    return {"Hello World!"}
+app.include_router(IndexRouter, tags=["Base"])
+app.include_router(AdminRouter, prefix="/admin", tags=["Admin"])
+app.include_router(UserRouter, prefix="/user", tags=["User"])
 
 
-
+fake_users_db = {
+    "johndoe": {
+        "username": "johndoe",
+        "full_name": "John Doe",
+        "email": "johndoe@example.com",
+        "hashed_password": "fakehashedsecret",
+        "disabled": False,
+    },
+    "alice": {
+        "username": "alice",
+        "full_name": "Alice Wonderson",
+        "email": "alice@example.com",
+        "hashed_password": "fakehashedsecret2",
+        "disabled": True,
+    },
+}
