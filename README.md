@@ -2,7 +2,6 @@
 
 To run the server, you need to type 
 
-<!-- insert a code block -->
 ```bash
 uvicorn app.index:app --reload
 ```
@@ -22,3 +21,9 @@ uvicorn app.index:app --reload
     - MONGO_URL
 
 Please contact [Jazlan](mailto:24100022@lums.edu.pk) for the MONGO_URL. You will ***not*** be able to connect to the DB without the URL.
+
+
+Models interacts with the DB -> Queries
+Schema is what you get out of the DB -> Data extracted from DB -> List of Schemas (List of Dicts)
+Routes is where you define end points, APIs, etc
+Utils is where you define functions that you can use in multiple places -> helper functions
