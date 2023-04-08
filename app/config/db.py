@@ -4,12 +4,13 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
-load_dotenv()
+# load_dotenv()
 
 def connect_mongodb():
     try:
-        client = MongoClient(os.getenv('MONGO_URL'))
-        db = client["SEProj"]
+        client = MongoClient("mongodb+srv://admin:gAvqLqIFXUXtogos@seproj.wuivspd.mongodb.net/test")
+        # client = MongoClient(os.getenv('MONGO_URL'))
+        # db = client["SEProject"]
         print('Connected to MongoDB')
     except ConnectionFailure as e:
         print('Connection to MongoDB failed: %s' % e)
@@ -17,3 +18,11 @@ def connect_mongodb():
 
 
 client = connect_mongodb()
+
+
+# client = MongoClient(mongoURI)
+
+# db = client["SEproject"]
+# collection = db["User"]
+
+

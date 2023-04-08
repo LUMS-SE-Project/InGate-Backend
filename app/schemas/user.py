@@ -10,3 +10,7 @@ class User(BaseModel):
     password : str | None = None
     alumnus : bool | None = None
     status : bool | None = None
+
+class Login(BaseModel):
+    username: str
+    password: str

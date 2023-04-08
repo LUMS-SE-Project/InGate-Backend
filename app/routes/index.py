@@ -10,6 +10,8 @@ router = APIRouter()
 def index():
     return {"message": "Hello World!"}
 
+
+
 # @router.get("/protected")
 # # async def protected(token: Annotated[str, Depends(auth_scheme)]):
 #     return {"token": token}
