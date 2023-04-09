@@ -10,7 +10,9 @@ from app.config.db import client
 app = FastAPI(title="InGate")
 
 origins = [
-    *["http://localhost:3000"],
+    *["https://localhost:3000"],
+    *["https://localhost:8081"],
+    *["https://localhost:8080"],
 ]
 
 app.add_middleware(
