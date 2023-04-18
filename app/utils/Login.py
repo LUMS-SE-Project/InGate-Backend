@@ -1,5 +1,6 @@
 import regex as re
 from app.config.db import client
+from app.schemas.user import User, UserInDB
 
 async def verify_email(email : str):
     e = email
@@ -31,3 +32,12 @@ async def get_password(email : str):
         return hashed_password
     else:
         raise Exception("Email not found")
+    
+async def get_username(email : str):
+    table = client["SEProject"]["User"]
+    user = table.find_one({"email": email})
+
+    if not user:
+        raise Exception("Email not found")
+    user = UserInDB(**user)
+    return user.username

@@ -3,7 +3,6 @@ import regex as re
 from app.config.db import client
 
 async def verify_email(email : str):
-    print(email)
     # regex to match the format of email containing @lums.edu.pk
     regex = r"^[a-zA-Z0-9_.+-]+@lums.edu.pk$"
 
