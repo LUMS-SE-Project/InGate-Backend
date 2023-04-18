@@ -10,7 +10,7 @@ import app.config.secrets as SECRET
 from app.auth.provider import oauth2_scheme, get_password_hash, verify_password, create_access_token, get_current_user
 from app.utils.signUp import verify_email as SignUpVerifyEmail
 from app.utils.Login import verify_email as LoginVerifyEmail
-from app.utils.Login import get_password
+from app.utils.Login import get_password, get_username
 
 router = APIRouter()
 
@@ -69,11 +69,15 @@ async def check(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
         data={"sub": form_data.username}, expires_delta=access_token_expires
     )
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token, 
+        "token_type": "bearer",
+        "display_name": "User"
+        }
     
 async def authenticate_user(username: str, password: str):
     try:
-        await LoginVerifyEmail(username)
+        user = await get_username(username)
     except:
         raise Exception("Invalid email")
 
@@ -90,7 +94,3 @@ async def authenticate_user(username: str, password: str):
         return True
     else:
         raise Exception("Invalid password")
-
-@router.get('/me', response_model=UserInDB)
-async def get_user(token: Annotated[str, Depends(get_current_user)]):
-    return get_current_user(token)
