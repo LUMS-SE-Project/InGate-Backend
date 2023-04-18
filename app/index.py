@@ -1,9 +1,5 @@
-from typing import Annotated
-
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import APIRouter
-from fastapi.security import OAuth2PasswordBearer
 
 from app.config.db import client
 
@@ -31,21 +27,3 @@ from app.routes.user import router as UserRouter
 app.include_router(IndexRouter, tags=["Base"])
 app.include_router(AdminRouter, prefix="/admin", tags=["Admin"])
 app.include_router(UserRouter, prefix="/user", tags=["User"])
-
-
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "fakehashedsecret",
-        "disabled": False,
-    },
-    "alice": {
-        "username": "alice",
-        "full_name": "Alice Wonderson",
-        "email": "alice@example.com",
-        "hashed_password": "fakehashedsecret2",
-        "disabled": True,
-    },
-}
