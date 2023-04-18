@@ -13,7 +13,7 @@ from app.config.secrets import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTE
 from app.config.db import client
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
