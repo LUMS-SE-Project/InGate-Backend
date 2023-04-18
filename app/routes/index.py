@@ -19,7 +19,7 @@ def index():
     return {"message": "Hello World!"}
 
 @router.post('/signup')
-async def create(data : User):
+async def signup(data : User):
     try :
         await SignUpVerifyEmail(data.email)
     except Exception as e:
@@ -46,7 +46,7 @@ async def create(data : User):
     return {"signup": "Signup successful"}
 
 @router.post('/login', response_model=Token)
-async def check(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     
     try:
         user = await authenticate_user(form_data.username, form_data.password)
