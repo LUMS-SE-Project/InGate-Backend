@@ -11,6 +11,14 @@ class User(BaseModel):
     alumnus : bool | None = None
     status : bool | None = None
 
+class UserInDB(BaseModel):
+    username : str
+    email : str | None = None
+    name : str | None = None
+    hashed_password : str | None = None
+    alumnus : bool | None = None
+    status : bool | None = None
+
 class Login(BaseModel):
     username: str
     password: str
