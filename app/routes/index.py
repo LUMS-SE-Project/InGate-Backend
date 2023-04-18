@@ -45,7 +45,7 @@ async def create(data : User):
     table.insert_one(dict(db_obj))
     return {"signup": "Signup successful"}
 
-@router.post('/token', response_model=Token)
+@router.post('/login', response_model=Token)
 async def check(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     
     try:
