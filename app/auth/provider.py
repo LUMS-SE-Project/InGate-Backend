@@ -55,7 +55,6 @@ def return_user(token: Annotated[str, Depends(oauth2_scheme)]):
     if not user:
         raise exception
     
-    print("returning", user)
     return UserInDB(**user)
 
 def get_current_user(user: Annotated[UserInDB, Depends(return_user)]):

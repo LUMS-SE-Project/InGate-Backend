@@ -7,10 +7,10 @@ from app.schemas.token import Token, TokenData
 from app.config.db import client
 import app.config.secrets as SECRET
 
-from app.auth.provider import oauth2_scheme, get_password_hash, verify_password, create_access_token, get_current_user
+from app.auth.provider import oauth2_scheme, get_password_hash, verify_password, create_access_token, return_user
 from app.utils.signUp import verify_email as SignUpVerifyEmail
 from app.utils.Login import verify_email as LoginVerifyEmail
-from app.utils.Login import get_password, get_username
+from app.utils.Login import get_password, get_info
 
 router = APIRouter()
 
@@ -37,7 +37,8 @@ async def signup(data : User):
         name=data.name, 
         hashed_password=hashed_password, 
         alumnus=data.alumnus, 
-        status=data.status
+        status=data.status,
+        isAdmin=False
         )
     
     table = client["SEProject"]["User"]
@@ -47,7 +48,6 @@ async def signup(data : User):
 
 @router.post('/login', response_model=Token)
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    
     try:
         user = await authenticate_user(form_data.username, form_data.password)
     except Exception as e:
@@ -72,12 +72,38 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     return {
         "access_token": access_token, 
         "token_type": "bearer",
-        "display_name": "User"
+        "username": user.username,
+        "email": user.email,
+        "name": user.name,
+        "isAdmin": user.isAdmin
         }
-    
+
+@router.get("/current-user")
+async def current_user(token : str = Depends(oauth2_scheme)):
+    try:
+        user = await return_user(token)
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    data_to_return = dict(
+        username=user.username,
+        email=user.email,
+        name=user.name,
+        isAdmin = user.isAdmin
+    )
+
+    return {
+        "data" : data_to_return
+    }
+
+
 async def authenticate_user(username: str, password: str):
     try:
-        user = await get_username(username)
+        user = await get_info(username)
     except:
         raise Exception("Invalid email")
 
@@ -91,6 +117,6 @@ async def authenticate_user(username: str, password: str):
     password_verify = verify_password(password, hashed_password)
 
     if password_verify:
-        return True
+        return user
     else:
         raise Exception("Invalid password")

@@ -10,6 +10,14 @@ class User(BaseModel):
     password : str | None = None
     alumnus : bool | None = None
     status : bool | None = None
+    isAdmin : bool | None = None
+
+class UserInSignUp(BaseModel):
+    username : str
+    email : str
+    name : str
+    password : str
+    alumnus : bool
 
 class UserInDB(BaseModel):
     username : str | None = None
@@ -18,6 +26,7 @@ class UserInDB(BaseModel):
     hashed_password : str | None = None
     alumnus : bool | None = None
     status : bool | None = None
+    isAdmin : bool | None = None
 
 class Login(BaseModel):
     username: str

@@ -5,7 +5,10 @@ from pydantic import BaseModel
 class Token(BaseModel):
     access_token: str
     token_type: str
-    display_name: str | None = None
+    username: str | None = None
+    email: str | None = None
+    name: str | None = None
+    isAdmin: bool | None = None
 
 class TokenData(BaseModel):
     username: str | None = None

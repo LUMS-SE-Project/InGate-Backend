@@ -33,11 +33,11 @@ async def get_password(email : str):
     else:
         raise Exception("Email not found")
     
-async def get_username(email : str):
+async def get_info(email : str):
     table = client["SEProject"]["User"]
     user = table.find_one({"email": email})
 
     if not user:
         raise Exception("Email not found")
     user = UserInDB(**user)
-    return user.username
+    return user
