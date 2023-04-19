@@ -3,6 +3,14 @@ from fastapi import Depends
 from pydantic import BaseModel
 from app.schemas.restaurant import ItemInCart
 
+# change for gender
+class UserInSignUp(BaseModel):
+    username : str
+    email : str
+    name : str
+    password : str
+    alumnus : bool
+
 
 class User(BaseModel):
     username : str | None = None
