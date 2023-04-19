@@ -1,6 +1,7 @@
 from typing import Annotated
 from fastapi import Depends
 from pydantic import BaseModel
+from app.schemas.restaurant import ItemInCart
 
 
 class User(BaseModel):
@@ -26,8 +27,14 @@ class UserInDB(BaseModel):
     hashed_password : str | None = None
     alumnus : bool | None = None
     status : bool | None = None
+    gender: str
     isAdmin : bool | None = None
 
 class Login(BaseModel):
     username: str
     password: str
+
+class Order(BaseModel):
+    items: list[ItemInCart]
+    gender_preference: str
+    partial_order: bool
