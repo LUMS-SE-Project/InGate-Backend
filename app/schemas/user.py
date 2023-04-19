@@ -2,6 +2,14 @@ from typing import Annotated
 from fastapi import Depends
 from pydantic import BaseModel
 
+# change for gender
+class UserInSignUp(BaseModel):
+    username : str
+    email : str
+    name : str
+    password : str
+    alumnus : bool
+
 
 class User(BaseModel):
     username : str | None = None
