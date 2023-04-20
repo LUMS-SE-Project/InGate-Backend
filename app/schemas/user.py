@@ -39,6 +39,7 @@ class Order(BaseModel):
     items: list[ItemInCart]
     gender_preference: str
     partial_order: bool
+    order_email: str
 
 class ItemRequest(BaseModel):
     item_name: str
@@ -55,3 +56,19 @@ class Reviews(BaseModel):
 class Blocked(BaseModel):
     blocker_email: str
     blockee_email: str
+
+class Reported(BaseModel):
+    reporter_email: str
+    reportee_email: str
+    situation: str
+    additional_comments: str
+    approved_by_admin: int
+    # 0 would mean not approved
+    # 1 would mean approved
+
+class ItemAccept(BaseModel):
+    item_id: str
+    item_name: str
+    item_location: str
+    requester_email: str
+    accepted: bool

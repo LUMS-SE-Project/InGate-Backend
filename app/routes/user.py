@@ -7,6 +7,9 @@ from app.schemas.restaurant import Item
 from app.schemas.user import ItemRequest
 from app.schemas.user import Reviews
 from app.schemas.user import Blocked
+from app.schemas.user import Reported
+from app.auth.provider import oauth2_scheme, get_password_hash, verify_password, create_access_token, return_user
+
 
 router = APIRouter()
 
@@ -71,8 +74,11 @@ async def place_order(order: Order):
     for item in order.items:
         total_price += item.item_price * item.quantity
 
+    # print(order.gender_preference)
+
+
     order_table.insert_one({"items": order_items, "gender_preference": order.gender_preference,
-                            "partial_order": order.partial_order, "total_price": total_price, "accepted": 0, "order_location": order_items[0]["item_location"]})
+                            "partial_order": order.partial_order, "total_price": total_price, "accepted": 0, "order_location": order_items[0]["item_location"] , "order_email": order.order_email})
 
     return {"message": "Order Placed"}
 
@@ -95,14 +101,25 @@ async def display_orders(my_email: str):
     
     orders_list = []
 
-    
+    blocked_table = client["SEProject"]["Blocked"]
+    me_blocked_users = blocked_table.find({"blockee_email": my_email})
+    my_blocked_users  = blocked_table.find({"blocker_email": my_email})
+    me_blocked_users = [user["blocker_email"] for user in me_blocked_users]
+    my_blocked_users = [user["blockee_email"] for user in my_blocked_users]
+
+    me_blocked_users.extend(my_blocked_users)
+    print(me_blocked_users)
+
+
     orders_list = [dict(ordr) for ordr in orders_of_my_gender]
     orders_list2 = [dict(ordr) for ordr in orders_of_none_gender]
     orders_list.extend(orders_list2)
     returning_list = []
     for order in orders_list:
-        returning_list.append({"items": order["items"], "gender_preference": order["gender_preference"],
+        if order["order_email"] not in me_blocked_users:
+            returning_list.append({"items": order["items"], "gender_preference": order["gender_preference"],
                             "partial_order": order["partial_order"], "total_price": order["total_price"], "accepted": 0, "order_location": order["order_location"] , "order_id" : str(order["_id"])})
+            
     print(returning_list)
 
     return {
@@ -147,4 +164,18 @@ async def block_user(block: Blocked):
     block_table.insert_one({"blocker_email": block.blocker_email, "blockee_email": block.blockee_email})
     return {"message": "User Blocked"}
    
-   
+@router.post('/report-user')
+async def report_user(report: Reported):
+    report_table = client["SEProject"]["Reported"]
+    report_table.insert_one({"reporter_email": report.reporter_email, "reportee_email": report.reportee_email , "situation": report.situation , "additional_comments" : report.additional_comments, "approved_by_admin": 0})
+    return {"message": "User Reported"}
+
+
+@router.post('/forgot-password')
+async def forgot_password(email: str, password:str):
+    user_table = client["SEProject"]["User"]
+    hashed_password = get_password_hash(password)
+    user_table.update_one({"email": email}, {"$set": {"hashed_password": hashed_password}})
+    return {"message": "Password Updated"}
+
+

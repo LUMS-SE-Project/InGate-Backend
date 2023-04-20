@@ -5,6 +5,8 @@ from app.schemas.user import Login
 from app.schemas.user import User
 from app.schemas.user import ItemRequest
 from app.schemas.restaurant import Item
+from app.schemas.user import Reported
+from app.schemas.user import ItemAccept
 
 from bson import ObjectId
 
@@ -92,7 +94,7 @@ def all_item_requests():
 
 # accept item request
 @router.put('/accept-item-request')
-def accept_item_request(item: Item):
+def accept_item_request(item: ItemAccept):
     item_table = client["SEProject"]["ItemRequest"]
     item = dict(item)
     item_table.update_one({"_id": ObjectId(item["item_id"])}, {"$set": {"accepted": 1}})
@@ -103,3 +105,41 @@ def accept_item_request(item: Item):
 
 
     return {"message": "Item Request Accepted"}
+
+# reject item request
+@router.post('/reject-item-request')
+def reject_item_request(item: ItemAccept):
+    item_table = client["SEProject"]["ItemRequest"]
+    item = dict(item)
+    item_table.delete_one({"_id": ObjectId(item["item_id"])})
+    return {"message": "Item Request Rejected"}
+
+# view all reported users
+@router.get('/all-reported-users')
+def all_reported_users():
+    response = client["SEProject"]["Reported"].find({"approved_by_admin": 0})
+    data = []
+    for i in response:
+        i["_id"] = str(i["_id"])
+        data.append(i)
+    return {"all-reported-users": data}
+
+# approve reported user
+@router.post('/approve-reported-user')
+def approve_reported_user(user: Reported):
+    # set the status in the user table as false
+    user_table = client["SEProject"]["User"]
+    user = dict(user)
+    user_table.update_one({"email" : user["reportee_email"]}, {"$set": {"status": False}})
+    return {"message": "User Blocked"}
+
+# reject approved user
+@router.post('/reject-reported-user')
+def reject_reported_user(user: Reported):
+    # remove the user from the reported table
+    user_table = client["SEProject"]["Reported"]
+    user = dict(user)
+    user_table.delete_one({"reportee_email" : user["reportee_email"], "reporter_email": user["reporter_email"]})
+    return {"message": "User Removed From The reported Table"}
+
+
