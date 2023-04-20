@@ -36,7 +36,8 @@ async def signup(data : UserInSignUp):
         email=data.email, 
         name=data.name, 
         hashed_password=hashed_password, 
-        alumnus=data.alumnus, 
+        alumnus=data.alumnus,
+        gender="male", 
         status=False,
         isAdmin=False
         )
