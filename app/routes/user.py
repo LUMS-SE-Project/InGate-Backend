@@ -172,7 +172,9 @@ async def report_user(report: Reported):
 
 
 @router.post('/forgot-password')
-async def forgot_password(email: str, password:str):
+async def forgot_password(data : dict):
+    email = data["email"]
+    password = data["password"]
     user_table = client["SEProject"]["User"]
     hashed_password = get_password_hash(password)
     user_table.update_one({"email": email}, {"$set": {"hashed_password": hashed_password}})
