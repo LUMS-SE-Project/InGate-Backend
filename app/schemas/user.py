@@ -11,6 +11,7 @@ class UserInSignUp(BaseModel):
     password : str
     alumnus : bool
     gender : str
+    number : str
 
 
 class User(BaseModel):
@@ -32,6 +33,7 @@ class UserInDB(BaseModel):
     status : bool | None = None
     gender: str | None = None
     isAdmin : bool | None = None
+    number : str | None = None
 
 class Login(BaseModel):
     username: str
