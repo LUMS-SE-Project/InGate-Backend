@@ -12,6 +12,7 @@ class User(BaseModel):
     alumnus : bool | None = None
     status : bool | None = None
     isAdmin : bool | None = None
+    gender: str 
 
 class UserInSignUp(BaseModel):
     username : str
@@ -38,3 +39,19 @@ class Order(BaseModel):
     items: list[ItemInCart]
     gender_preference: str
     partial_order: bool
+
+class ItemRequest(BaseModel):
+    item_name: str
+    item_location: str
+    requester_email: str
+    accepted: bool
+
+class Reviews(BaseModel):
+    reviewer_email: str
+    reviewee_email: str
+    review: str
+    rating: int
+
+class Blocked(BaseModel):
+    blocker_email: str
+    blockee_email: str

@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class Item(BaseModel):
     item_name: str
-    item_id: int
+    item_id: str
     item_description: str | None = None
     item_price: int
     item_location: str

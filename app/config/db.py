@@ -1,6 +1,6 @@
 # connect mongodb
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 

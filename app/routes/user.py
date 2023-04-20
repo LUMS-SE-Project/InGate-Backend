@@ -4,6 +4,9 @@ from app.schemas.user import User, Order
 from bson import ObjectId
 # from app.schemas.user import Order, ItemInOrder
 from app.schemas.restaurant import Item
+from app.schemas.user import ItemRequest
+from app.schemas.user import Reviews
+from app.schemas.user import Blocked
 
 router = APIRouter()
 
@@ -112,3 +115,36 @@ async def accept_order(order_id: str):
     order_table = client["SEProject"]["Order"]
     order_table.update_one({"_id": ObjectId(order_id)}, {"$set": {"accepted": 1}})
     return {"message": "Order Accepted"}
+
+
+@router.post('/request-item')
+async def request_item(item: ItemRequest):
+    request_table = client["SEProject"]["ItemRequest"]
+    request_table.insert_one({"item_name": item.item_name, "item_location": item.item_location, "accepted": 0 , "requester_email" : item.requester_email})
+    
+    return {"message": "Item Requested"}
+
+@router.post('/user-review/{my_email}')
+async def user_review(review: Reviews):
+    review_table = client["SEProject"]["Review"]
+    review_table.insert_one({"reviewer_email": review.reviewer_email, "reviewee_email": review.reviewee_email, "review": review.review, "rating": review.rating})
+    return {"message": "Review Added"}
+
+@router.get('/my-reviews/{my_email}')
+async def my_reviews(my_email: str):
+    review_table = client["SEProject"]["Review"]
+    reviews = review_table.find({"reviewee_email": my_email})
+    # reviews_list = [dict(review) for review in reviews]
+    reviews_list = []
+    for rev in reviews:
+        rev["_id"] = str(rev["_id"])
+        reviews_list.append(rev)
+    return {"reviews": reviews_list}
+
+@router.post('/block-user')
+async def block_user(block: Blocked):
+    block_table = client["SEProject"]["Blocked"]
+    block_table.insert_one({"blocker_email": block.blocker_email, "blockee_email": block.blockee_email})
+    return {"message": "User Blocked"}
+   
+   
