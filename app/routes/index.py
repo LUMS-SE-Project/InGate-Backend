@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from typing import Annotated, Union
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from app.schemas.user import User, UserInDB
+from app.schemas.user import User, UserInDB, UserInSignUp
 from app.schemas.token import Token, TokenData
 from app.config.db import client
 import app.config.secrets as SECRET
@@ -19,7 +19,7 @@ def index():
     return {"message": "Hello World!"}
 
 @router.post('/signup')
-async def signup(data : User):
+async def signup(data : UserInSignUp):
     try :
         await SignUpVerifyEmail(data.email)
     except Exception as e:
@@ -36,10 +36,10 @@ async def signup(data : User):
         email=data.email, 
         name=data.name, 
         hashed_password=hashed_password, 
-        alumnus=data.alumnus, 
-        status=data.status,
         isAdmin=False,
         gender= data.gender
+        alumnus=False,
+        status=False,
         )
     
     table = client["SEProject"]["User"]

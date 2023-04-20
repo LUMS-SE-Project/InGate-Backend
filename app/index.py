@@ -7,11 +7,7 @@ from app.auth.provider import oauth2_scheme
 
 app = FastAPI(title="InGate")
 
-origins = [
-    *["https://localhost:3000"],
-    *["https://localhost:8081"],
-    *["https://localhost:8080"],
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
