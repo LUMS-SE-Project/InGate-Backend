@@ -36,10 +36,10 @@ async def signup(data : UserInSignUp):
         email=data.email, 
         name=data.name, 
         hashed_password=hashed_password, 
-        alumnus=data.alumnus,
-        gender="male", 
+        isAdmin=False,
+        gender= data.gender
+        alumnus=False,
         status=False,
-        isAdmin=False
         )
     
     table = client["SEProject"]["User"]
