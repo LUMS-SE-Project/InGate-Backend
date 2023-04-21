@@ -74,11 +74,13 @@ async def place_order(order: Order):
     for item in order.items:
         total_price += item.item_price * item.quantity
 
-    # print(order.gender_preference)
-
+    user_table = client["SEProject"]["User"]
+    # find the number of the user in the user_table
+    user = user_table.find_one({"email": order.order_email})
+    user_number = user["number"]
 
     order_table.insert_one({"items": order_items, "gender_preference": order.gender_preference,
-                            "partial_order": order.partial_order, "total_price": total_price, "accepted": 0, "order_location": order_items[0]["item_location"] , "order_email": order.order_email})
+                            "partial_order": order.partial_order, "total_price": total_price, "accepted": 0, "order_location": order_items[0]["item_location"] , "order_email": order.order_email , "order_number" : user_number})
 
     return {"message": "Order Placed"}
 
