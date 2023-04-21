@@ -200,3 +200,9 @@ async def my_orders(email: str):
 
     return {"orders": order_list}
 
+
+# complete order
+@router.put('/complete-order')
+async def complete_order(order_id: str):
+    accept_order_table = client["SEProject"]["OrderPlaced"]
+    accept_order_table.delete_one({"order_id": order_id})
