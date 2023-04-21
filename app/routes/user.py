@@ -139,6 +139,8 @@ async def accept_order(order_id: str):
 async def get_order_id(order_id: str):
     order_table = client["SEProject"]["Order"]
     order = order_table.find_one({"_id": ObjectId(order_id)})
+    for i in order:
+        i["_id"] = str(i["_id"])
     return {"order": order}
 
 
