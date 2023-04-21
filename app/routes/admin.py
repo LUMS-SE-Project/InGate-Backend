@@ -67,7 +67,7 @@ def verifyS(data: User):
     return "Done"
 
 
-@router.delete('/reject_user')
+@router.put('/reject_user')
 def rejectUser(data: User):
     data = dict(data)
     data = client["SEProject"]["User"].delete_one({"email": data["email"]})
