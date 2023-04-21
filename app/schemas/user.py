@@ -45,6 +45,7 @@ class Order(BaseModel):
     gender_preference: str
     partial_order: bool
     order_email: str
+    delivery_location: str
 
 class ItemRequest(BaseModel):
     item_name: str
