@@ -57,7 +57,7 @@ async def displayitems(location_name: str):
     # Construct the list of items to return
     items = []
     for item in items_data:
-        items.append({"item_name": item["item_name"], "item_id": item["item_id"], "item_price": item["item_price"],
+        items.append({"item_name": item["item_name"], "item_price": item["item_price"],
                      "item_location": item["item_location"], "item_desription": item["item_description"]})
 
     return {
