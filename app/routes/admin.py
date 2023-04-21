@@ -104,8 +104,8 @@ def accept_item_request(item: ItemAccept):
 
     
     item_table = client["SEProject"]["Item"]
-    item_table.insert_one({"item_name" : item.item_name , "item_description" : item.item_description , "item_location" : item.item_location , "item_price" :item.item_price})
-    
+    item_table.insert_one({"item_name" : item["item_name"] , "item_description" : item["item_description"] , "item_location" : item["item_location"] , "item_price" :item["item_price"]})
+
 
 
     return {"message": "Item Request Accepted"}
