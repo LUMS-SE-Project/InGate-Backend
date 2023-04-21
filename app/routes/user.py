@@ -130,12 +130,12 @@ async def display_orders(my_email: str):
 
 
 @router.put('/accept-order')
-async def accept_order(order_id: str, dost_email:str, khareedar_email: str):
+async def accept_order(order_detail: OrderPlaced):
     order_table = client["SEProject"]["Order"]
-    order_table.update_one({"_id": ObjectId(order_id)}, {"$set": {"accepted": 1}})
+    order_table.update_one({"_id": ObjectId(order_detail.order_id)}, {"$set": {"accepted": 1}})
 
     accepted_order_table = client["SEProject"]["OrderPlaced"]
-    accepted_order_table.insert_one({"order_id": order_id, "dost_email": dost_email, "khareedar_email": khareedar_email})
+    accepted_order_table.insert_one({"order_id": order_detail.order_id, "dost_email": order_detail.dost_email, "khareedar_email": order_detail.khareedar_email})
     
     return {"message": "Order Accepted"}
 
