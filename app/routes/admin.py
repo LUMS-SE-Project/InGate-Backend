@@ -56,13 +56,23 @@ def display_reqs():
     return data
 
 
+
+
 @router.put('/verify_status')
 def verifyS(data: User):
     data = dict(data)
     data["status"] = True
     data = client["SEProject"]["User"].update_one(
-        {"username": data["username"]}, {"$set": data})
+        {"email": data["email"]}, {"$set": data})
     return "Done"
+
+
+@router.delete('/reject_user')
+def rejectUser(data: User):
+    data = dict(data)
+    data = client["SEProject"]["User"].delete_one({"email": data["email"]})
+    return {"message":"Done"}
+
 
 
 @router.put('/verify_alumnus')
@@ -74,13 +84,6 @@ def verifyA(data: User):
     return "Done"
 
 
-# @router.post('/signup')
-# async def path2(data: dict):
-#     return {"message": "Signup Endpoint for Admin"}
-
-# @router.post('/login')
-# async def path3(data: dict):
-#     return {"message": "Login Endpoint for Admin"}
 
 
 @router.get('/all-item-requests')
