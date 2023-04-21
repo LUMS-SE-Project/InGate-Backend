@@ -9,7 +9,7 @@ from app.schemas.user import Reviews
 from app.schemas.user import Blocked
 from app.schemas.user import Reported
 from app.auth.provider import oauth2_scheme, get_password_hash, verify_password, create_access_token, return_user
-
+from app.schemas.user import OrderPlaced
 
 router = APIRouter()
 
@@ -130,9 +130,13 @@ async def display_orders(my_email: str):
 
 
 @router.put('/accept-order')
-async def accept_order(order_id: str):
+async def accept_order(order_id: str, dost_email:str, khareedar_email: str):
     order_table = client["SEProject"]["Order"]
     order_table.update_one({"_id": ObjectId(order_id)}, {"$set": {"accepted": 1}})
+
+    accepted_order_table = client["SEProject"]["OrderPlaced"]
+    accepted_order_table.insert_one({"order_id": order_id, "dost_email": dost_email, "khareedar_email": khareedar_email})
+    
     return {"message": "Order Accepted"}
 
 @router.get("/get-order-detail/{order_id}")

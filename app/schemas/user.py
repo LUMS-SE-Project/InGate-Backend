@@ -88,3 +88,8 @@ class ItemReject(BaseModel):
     requester_email: str
     accepted: bool
 
+class OrderPlaced(BaseModel):
+    order_id: str
+    dost_email: str
+    khareedar_email: str
+    
