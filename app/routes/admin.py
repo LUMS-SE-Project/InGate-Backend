@@ -134,6 +134,11 @@ def approve_reported_user(user: Reported):
     user_table = client["SEProject"]["User"]
     user = dict(user)
     user_table.update_one({"email" : user["reportee_email"]}, {"$set": {"status": False}})
+
+    # remove from the reported table
+    reported_table = client["SEProject"]["Reported"]
+    reported_table.update_one({"reportee_email" : user["reportee_email"], "reporter_email": user["reporter_email"]} , {"$set": {"approved_by_admin" : 1}})
+
     return {"message": "User Blocked"}
 
 # reject approved user
