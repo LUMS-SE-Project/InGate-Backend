@@ -174,3 +174,15 @@ async def report_user(report: Reported):
 
 
 
+@router.get('/my-orders/{email}')
+async def my_orders(email: str):
+    order_table = client["SEProject"]["Order"]
+    orders = order_table.find({"order_email": email})
+    # orders_list = [dict(order) for order in orders]
+    order_list = []
+    for order in orders:
+        order["_id"] = str(order["_id"])
+        order_list.append(order)
+
+    return {"orders": order_list}
+
