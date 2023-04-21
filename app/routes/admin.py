@@ -6,7 +6,7 @@ from app.schemas.user import User
 from app.schemas.user import ItemRequest
 from app.schemas.restaurant import Item
 from app.schemas.user import Reported
-from app.schemas.user import ItemAccept
+from app.schemas.user import ItemAccept, ItemReject
 
 from bson import ObjectId
 
@@ -104,14 +104,15 @@ def accept_item_request(item: ItemAccept):
 
     
     item_table = client["SEProject"]["Item"]
-    item_table.insert_one(dict(item))
+    item_table.insert_one({"item_name" : item.item_name , "item_description" : item.item_description , "item_location" : item.item_location , "item_price" :item.item_price})
+    
 
 
     return {"message": "Item Request Accepted"}
 
 # reject item request
 @router.post('/reject-item-request')
-def reject_item_request(item: ItemAccept):
+def reject_item_request(item: ItemReject):
     item_table = client["SEProject"]["ItemRequest"]
     item = dict(item)
     item_table.delete_one({"_id": ObjectId(item["item_id"])})

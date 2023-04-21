@@ -77,3 +77,13 @@ class ItemAccept(BaseModel):
     item_location: str
     requester_email: str
     accepted: bool
+    item_description: str
+    item_price: int
+
+class ItemReject(BaseModel):
+    item_id: str
+    item_name: str
+    item_location: str
+    requester_email: str
+    accepted: bool
+
