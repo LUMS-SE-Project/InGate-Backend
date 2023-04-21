@@ -135,6 +135,14 @@ async def accept_order(order_id: str):
     order_table.update_one({"_id": ObjectId(order_id)}, {"$set": {"accepted": 1}})
     return {"message": "Order Accepted"}
 
+@router.get("/get-order-detail/{order_id}")
+async def get_order_id(order_id: str):
+    order_table = client["SEProject"]["Order"]
+    order = order_table.find_one({"_id": ObjectId(order_id)})
+    return {"order": order}
+
+
+
 
 @router.post('/request-item')
 async def request_item(item: ItemRequest):
