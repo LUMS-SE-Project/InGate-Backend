@@ -92,4 +92,6 @@ class OrderPlaced(BaseModel):
     order_id: str
     dost_email: str
     khareedar_email: str
-    
+
+class Completed(BaseModel):
+    order_id: str

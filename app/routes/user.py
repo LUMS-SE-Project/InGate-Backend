@@ -9,7 +9,8 @@ from app.schemas.user import Reviews
 from app.schemas.user import Blocked
 from app.schemas.user import Reported
 from app.auth.provider import oauth2_scheme, get_password_hash, verify_password, create_access_token, return_user
-from app.schemas.user import OrderPlaced
+from app.schemas.user import OrderPlaced, Completed
+
 
 router = APIRouter()
 
@@ -203,6 +204,6 @@ async def my_orders(email: str):
 
 # complete order
 @router.put('/complete-order')
-async def complete_order(order_id: str):
+async def complete_order(order: Completed):
     accept_order_table = client["SEProject"]["OrderPlaced"]
-    accept_order_table.delete_one({"order_id": order_id})
+    accept_order_table.delete_one({"order_id": order.order_id})
