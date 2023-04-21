@@ -120,7 +120,7 @@ async def display_orders(my_email: str):
     for order in orders_list:
         if order["order_email"] not in me_blocked_users:
             returning_list.append({"items": order["items"], "gender_preference": order["gender_preference"],
-                            "partial_order": order["partial_order"], "total_price": order["total_price"], "accepted": 0, "order_location": order["order_location"] , "order_id" : str(order["_id"]) , "order_number" : order["order_number"]})
+                            "partial_order": order["partial_order"], "total_price": order["total_price"], "accepted": 0, "order_location": order["order_location"] , "order_id" : str(order["_id"]) , "order_number" : order["order_number"] , "order_email" : order["order_email"]})
             
     print(returning_list)
 
